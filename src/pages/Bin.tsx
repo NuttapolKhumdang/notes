@@ -1,7 +1,8 @@
-import { For, type Component } from "solid-js";
+import { For, Show, type Component } from "solid-js";
 import { Notes } from "../lib/notes";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
+import NoteNotFoundFallback from "../components/Notes/NotFound";
 
 const Bin: Component = () => {
   return (
@@ -22,6 +23,12 @@ const Bin: Component = () => {
           )}
         </For>
       </section>
+
+      <Show
+        when={Notes.Notes.filter((k) => k.status === "delete").length === 0}
+      >
+        <NoteNotFoundFallback />
+      </Show>
     </main>
   );
 };

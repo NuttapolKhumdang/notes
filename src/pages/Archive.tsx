@@ -1,7 +1,8 @@
-import { For, type Component } from "solid-js";
+import { For, Show, type Component } from "solid-js";
 import { Notes } from "../lib/notes";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
+import NoteNotFoundFallback from "../components/Notes/NotFound";
 
 const Archive: Component = () => {
   return (
@@ -12,9 +13,9 @@ const Archive: Component = () => {
           {(container) => (
             <NoteColumnContainer>
               <For
-                each={Notes.Notes
-                  .filter((k) => k.status === "archive")
-                  .filter((k, i) => i % 3 === container)}
+                each={Notes.Notes.filter((k) => k.status === "archive").filter(
+                  (k, i) => i % 3 === container,
+                )}
               >
                 {(n) => <NoteItem n={n} />}
               </For>
@@ -22,6 +23,12 @@ const Archive: Component = () => {
           )}
         </For>
       </section>
+
+      <Show
+        when={Notes.Notes.filter((k) => k.status === "archive").length === 0}
+      >
+        <NoteNotFoundFallback />
+      </Show>
     </main>
   );
 };

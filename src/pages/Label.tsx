@@ -1,7 +1,8 @@
-import { For, type Component } from "solid-js";
+import { For, Show, type Component } from "solid-js";
 import { Notes } from "../lib/notes";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
+import NoteNotFoundFallback from "../components/Notes/NotFound";
 
 const Label: Component = () => {
   return (
@@ -14,9 +15,9 @@ const Label: Component = () => {
               <For
                 each={Notes.Notes.filter(
                   (k) =>
-                    (k.label?.length &&
-                      k.label?.length !== 0 &&
-                      k.status !== "delete") &&
+                    k.label?.length &&
+                    k.label?.length !== 0 &&
+                    k.status !== "delete" &&
                     k.status !== "archive",
                 ).filter((k, i) => i % 3 === container)}
               >
@@ -26,6 +27,14 @@ const Label: Component = () => {
           )}
         </For>
       </section>
+      <Show
+        when={
+          Notes.Notes.filter((k) => k.label && k.label?.length !== 0).length ===
+          0
+        }
+      >
+        <NoteNotFoundFallback />
+      </Show>
     </main>
   );
 };
