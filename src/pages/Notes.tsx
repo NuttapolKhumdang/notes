@@ -82,6 +82,20 @@ const Note: Component = () => {
     NoteSyncLocal();
   };
 
+  const handleLabelRemove = (label: string) => {
+    // add new label to storage
+    setNotes("Label", (pv) => pv.filter((k) => k !== label));
+    setNotes("Notes", (notes) =>
+      notes.map((n) => {
+        if (n.label?.length && n.label.length > 0)
+          n.label = n.label.filter((k) => k !== label);
+        return n;
+      }),
+    );
+    // sync local with current Notes
+    NoteSyncLocal();
+  };
+
   const handleLabelSelected = (t: string, checked: boolean) => {
     if (checked) {
       setNoteSelectedLabel([...noteSelectedLabel(), t]);
@@ -94,10 +108,6 @@ const Note: Component = () => {
 
   onMount(() => {
     autoTextareaSize(NoteInputRef);
-  });
-
-  createEffect(() => {
-    console.log(noteSelectedLabel());
   });
 
   return (
@@ -131,7 +141,7 @@ const Note: Component = () => {
               />
 
               <Show when={showLabelSelector()}>
-                <section class="absolute top-8 right-0 flex w-max flex-col gap-2 rounded-lg border border-neutral-200 bg-neutral-100 p-2">
+                <section class="absolute top-8 right-0 z-20 flex w-max flex-col gap-2 rounded-lg border border-neutral-200 bg-neutral-100 p-2">
                   <span class="text-sm">เพิ่มป้ายกำกับ</span>
                   <input
                     type="text"
@@ -152,6 +162,7 @@ const Note: Component = () => {
                           onChange={(checked) =>
                             handleLabelSelected(t, checked)
                           }
+                          onDelete={(label) => handleLabelRemove(label)}
                         />
                       )}
                     </For>

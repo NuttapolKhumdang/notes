@@ -44,13 +44,14 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
   };
 
   return (
-    <div class="group rounded-xl border border-neutral-200 p-2 pb-1">
+    <div class="group cursor-pointer rounded-xl border border-neutral-200 p-2 pb-1 hover:border-neutral-400 duration-150">
       <h2 class="text-lg">{title}</h2>
       <span class="text-sm whitespace-pre-wrap">{body}</span>
 
-      <div class="flex flex-row items-center justify-end flex-wrap gap-1">
+      <div class="flex flex-row flex-wrap items-center justify-end gap-1">
         <For each={label}>{(l) => <TagLabel label={l} />}</For>
       </div>
+
       <menu class="flex flex-row justify-between gap-1 text-neutral-600">
         <div class="flex flex-row gap-1 opacity-0 duration-300 group-hover:opacity-100">
           <Switch>
@@ -86,7 +87,8 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
               />
             </Match>
           </Switch>
-
+        </div>
+        <div class="flex flex-row gap-1 opacity-0 duration-300 group-hover:opacity-100">
           <NoteMenuButton
             action={() => handleNoteRemove()}
             icon="delete"
