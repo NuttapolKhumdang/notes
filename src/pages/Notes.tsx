@@ -1,10 +1,4 @@
-import {
-  For,
-  Show,
-  onMount,
-  createSignal,
-  type Component,
-} from "solid-js";
+import { For, Show, onMount, createSignal, type Component } from "solid-js";
 import NoteMenuButton from "../components/Notes/NoteMenuButton";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
@@ -27,7 +21,9 @@ const Note: Component = () => {
   const [noteFieldBody, setNoteFieldBody] = createSignal<string>("");
 
   const NoteGetNextId = (): number => {
-    return Notes.Notes[Notes.Notes.length - 1].id + 1;
+    if (Notes.Notes.length > 0)
+      return Notes.Notes[Notes.Notes.length - 1].id + 1;
+    else return 0
   };
 
   const NoteAddHandler = (
