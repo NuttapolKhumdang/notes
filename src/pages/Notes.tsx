@@ -10,6 +10,7 @@ import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
 import { TagLabel } from "../components/Notes/NoteTags";
 import { INote, NoteSyncLocal } from "../lib/notes";
+import { Notes, setNotes } from "../lib/notes";
 
 function autoTextareaSize(obj: HTMLTextAreaElement) {
   obj.style.height = obj.scrollHeight / 2 + "px";
@@ -21,15 +22,12 @@ function autoTextareaSize(obj: HTMLTextAreaElement) {
   });
 }
 
-const Notes: Component = () => {
+const Note: Component = () => {
   const [noteFieldTitle, setNoteFieldTitle] = createSignal<string>("");
   const [noteFieldBody, setNoteFieldBody] = createSignal<string>("");
-  const [Notes, setNotes] = createSignal<INote[]>(
-    JSON.parse(localStorage.getItem("notes") ?? "[]"),
-  );
 
   const NoteGetNextId = (): number => {
-    return Notes().length + 1;
+    return Notes.Notes[Notes.Notes.length - 1].id + 1;
   };
 
   const NoteAddHandler = (
@@ -52,11 +50,12 @@ const Notes: Component = () => {
       })(),
     };
 
-    setNotes([...Notes(), note]);
+    if (!(note.body || note.title)) return;
+    setNotes("Notes", (pv) => [...pv, note]);
 
     setNoteFieldTitle("");
     setNoteFieldBody("");
-    NoteSyncLocal(Notes());
+    NoteSyncLocal();
   };
 
   let NoteInputRef: HTMLTextAreaElement;
@@ -120,15 +119,17 @@ const Notes: Component = () => {
         </menu>
       </section>
 
-      <Show when={Notes().filter((k) => k.status === "pinned").length !== 0}>
+      <Show
+        when={Notes.Notes.filter((k) => k.status === "pinned").length !== 0}
+      >
         <header class="text-sm text-neutral-600">ปักหมุด</header>
         <section class="container grid grid-cols-3 gap-2">
           <For each={[0, 1, 2]}>
             {(container) => (
               <NoteColumnContainer>
                 <For
-                  each={Notes().filter(
-                    (k, i) => i % 3 === container && k.status === "pinned",
+                  each={Notes.Notes.filter((k) => k.status === "pinned").filter(
+                    (k, i) => i % 3 === container,
                   )}
                 >
                   {(n) => <NoteItem n={n} />}
@@ -146,8 +147,7 @@ const Notes: Component = () => {
             <NoteColumnContainer>
               <For
                 each={
-                  Notes()
-                    .filter((k) => !k.status) // clear archive or pinned note
+                  Notes.Notes.filter((k) => !k.status) // clear archive or pinned note
                     .filter((k, i) => i % 3 === container) // for sorting to column
                 }
               >
@@ -161,4 +161,4 @@ const Notes: Component = () => {
   );
 };
 
-export default Notes;
+export default Note;

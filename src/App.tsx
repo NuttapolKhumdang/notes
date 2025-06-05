@@ -1,6 +1,7 @@
-import { Component, createSignal, Match, Switch } from "solid-js";
+import { Component, createEffect, createSignal, Match, Switch } from "solid-js";
 import Notes from "./pages/Notes";
 import Icon from "./components/Icon";
+import Archive from "./pages/Archive";
 
 enum Tab {
   Notes,
@@ -17,6 +18,10 @@ type MenuButton_t = {
   tab?: Tab;
   action?: VoidFunction;
 };
+
+function SyncViewLocal(t: Tab) {
+  localStorage.setItem("tab", t.toString());
+}
 
 const MenuButton: Component<MenuButton_t> = ({
   label,
@@ -41,6 +46,10 @@ const MenuButton: Component<MenuButton_t> = ({
 };
 
 const App: Component = () => {
+  createEffect(() => {
+    SyncViewLocal(viewing());
+  });
+
   return (
     <>
       <nav class="p-4"></nav>
@@ -76,6 +85,9 @@ const App: Component = () => {
         <Switch>
           <Match when={viewing() === Tab.Notes}>
             <Notes />
+          </Match>
+          <Match when={viewing() === Tab.Archive}>
+            <Archive />
           </Match>
         </Switch>
       </main>
