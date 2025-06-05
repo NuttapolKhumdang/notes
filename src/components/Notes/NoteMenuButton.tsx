@@ -17,8 +17,11 @@ const NoteMenuButton: Component<noteMenuButton_t> = ({
   let showLabelTimer: number;
 
   const setLebelShow = (show: boolean) => {
-    if (show) showLabelTimer = setTimeout(() => setShowLabel(true), 500);
-    else {
+    if (show) {
+      showLabelTimer = setTimeout(() => {
+        setShowLabel(true);
+      }, 800);
+    } else {
       clearTimeout(showLabelTimer);
       setShowLabel(false);
       showLabelTimer = 0;
@@ -27,7 +30,7 @@ const NoteMenuButton: Component<noteMenuButton_t> = ({
 
   return (
     <button
-      onMouseOver={() => setLebelShow(true)}
+      onMouseEnter={() => setLebelShow(true)}
       onMouseLeave={() => setLebelShow(false)}
       onClick={() => action()}
       class="relative flex size-8 items-center justify-center rounded-full border border-transparent duration-200 hover:border-neutral-300"
