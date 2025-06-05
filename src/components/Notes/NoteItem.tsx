@@ -53,7 +53,7 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
       </div>
 
       <menu class="flex flex-row justify-between gap-1 text-neutral-600">
-        <div class="flex flex-row gap-1 opacity-0 duration-300 group-hover:opacity-100">
+        <div class="flex flex-row opacity-0 duration-300 group-hover:opacity-100">
           <Switch>
             <Match when={status === "pinned"}>
               <NoteMenuButton
@@ -88,7 +88,7 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
             </Match>
           </Switch>
         </div>
-        <div class="flex flex-row gap-1 opacity-0 duration-300 group-hover:opacity-100">
+        <div class="flex flex-row opacity-0 duration-300 group-hover:opacity-100">
           <NoteMenuButton
             action={() => handleNoteRemove()}
             icon="delete"
