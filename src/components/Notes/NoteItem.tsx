@@ -7,7 +7,6 @@ const NoteItem: Component<{ n: INote }> = ({
   n: { id, title, body, label, status, created, updated },
 }) => {
   const NoteActionHandler = (action: INote["status"], s: boolean) => {
-    // const Note = Notes.Notes;
     let note: INote = {
       id,
       title,
