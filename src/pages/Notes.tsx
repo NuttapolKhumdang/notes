@@ -4,7 +4,6 @@ import {
   onMount,
   createSignal,
   type Component,
-  createEffect,
 } from "solid-js";
 import NoteMenuButton from "../components/Notes/NoteMenuButton";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
