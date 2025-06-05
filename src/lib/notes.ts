@@ -9,3 +9,11 @@ export interface INote {
 
     status?: undefined | "pinned" | "archive";
 }
+
+export const NoteSyncLocal = (n: INote[]) => {
+    localStorage.setItem("notes", JSON.stringify(n));
+};
+
+export const NoteGetLocal = (): INote[] => {
+    return JSON.parse(localStorage.getItem("notes") ?? '[]');
+};

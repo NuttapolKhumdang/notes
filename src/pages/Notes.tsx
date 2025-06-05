@@ -10,7 +10,7 @@ import NoteMenuButton from "../components/Notes/NoteMenuButton";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
 import { TagLabel } from "../components/Notes/NoteTags";
-import { INote } from "../lib/notes";
+import { INote, NoteSyncLocal } from "../lib/notes";
 
 function autoTextareaSize(obj: HTMLTextAreaElement) {
   obj.style.height = obj.scrollHeight / 2 + "px";
@@ -28,10 +28,6 @@ const Notes: Component = () => {
   const [Notes, setNotes] = createSignal<INote[]>(
     JSON.parse(localStorage.getItem("notes") ?? "[]"),
   );
-
-  const NoteSyncLocal = () => {
-    localStorage.setItem("notes", JSON.stringify(Notes()));
-  };
 
   const NoteGetNextId = (): number => {
     return Notes().length + 1;
@@ -61,12 +57,8 @@ const Notes: Component = () => {
 
     setNoteFieldTitle("");
     setNoteFieldBody("");
-    NoteSyncLocal();
+    NoteSyncLocal(Notes());
   };
-
-  createEffect(() => {
-    console.log(Notes());
-  });
 
   let NoteInputRef: HTMLTextAreaElement;
 
@@ -110,7 +102,7 @@ const Notes: Component = () => {
           </div>
 
           <div class="flex flex-row items-center gap-1 text-neutral-600">
-            <div class=" relative">
+            <div class="relative">
               <NoteMenuButton icon="label" label="เพิ่มป้ายกำกับ" />
             </div>
             <section class="flex flex-row gap-2">
