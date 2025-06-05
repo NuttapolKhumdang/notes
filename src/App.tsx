@@ -2,6 +2,7 @@ import { Component, createEffect, createSignal, Match, Switch } from "solid-js";
 import Notes from "./pages/Notes";
 import Icon from "./components/Icon";
 import Archive from "./pages/Archive";
+import Bin from "./pages/Bin";
 
 enum Tab {
   Notes,
@@ -88,6 +89,9 @@ const App: Component = () => {
           </Match>
           <Match when={viewing() === Tab.Archive}>
             <Archive />
+          </Match>
+          <Match when={viewing() === Tab.Bin}>
+            <Bin />
           </Match>
         </Switch>
       </main>
