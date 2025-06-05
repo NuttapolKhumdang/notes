@@ -3,6 +3,7 @@ import Notes from "./pages/Notes";
 import Icon from "./components/Icon";
 import Archive from "./pages/Archive";
 import Bin from "./pages/Bin";
+import Label from "./pages/Label";
 
 enum Tab {
   Notes,
@@ -86,6 +87,9 @@ const App: Component = () => {
         <Switch>
           <Match when={viewing() === Tab.Notes}>
             <Notes />
+          </Match>
+          <Match when={viewing() === Tab.Label}>
+            <Label />
           </Match>
           <Match when={viewing() === Tab.Archive}>
             <Archive />
