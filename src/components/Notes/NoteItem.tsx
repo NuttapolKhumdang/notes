@@ -6,20 +6,34 @@ import { TagLabel } from "./NoteTags";
 const NoteItem: Component<{ n: INote }> = ({
   n: { id, title, body, label, status, created, updated },
 }) => {
-  const NoteActionHandler = (action: INote["status"], s: boolean) => {
-    let note: INote = {
-      id,
-      title,
-      body,
-      label,
-      status,
-      created,
-      updated,
-    };
+  let note: INote = {
+    id,
+    title,
+    body,
+    label,
+    status,
+    created,
+    updated,
+  };
 
+  const NoteActionHandler = (action: INote["status"], s: boolean) => {
     if (action == "archive" && s) note.status = "archive";
     if (action == "pinned" && s) note.status = "pinned";
     if (!s) note.status = undefined;
+    note.updated = new Date();
+
+    setNotes(
+      "Notes",
+      Notes.Notes.findIndex((k) => k.id === id),
+      note,
+    );
+
+    NoteSyncLocal();
+  };
+
+  const handleNoteRemove = () => {
+    note.status = "delete";
+    note.updated = new Date();
 
     setNotes(
       "Notes",
@@ -70,6 +84,12 @@ const NoteItem: Component<{ n: INote }> = ({
               />
             </Match>
           </Switch>
+
+          <NoteMenuButton
+            action={() => handleNoteRemove()}
+            icon="delete"
+            label="ลบโน้ต"
+          />
         </div>
 
         <div class="flex flex-row items-center justify-center">
