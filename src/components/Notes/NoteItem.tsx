@@ -3,8 +3,9 @@ import NoteMenuButton from "./NoteMenuButton";
 import { INote, NoteSyncLocal, Notes, setNotes } from "../../lib/notes";
 import { TagLabel } from "./NoteTags";
 
-const NoteItem: Component<{ n: INote }> = ({
+const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
   n: { id, title, body, label, status, created, updated },
+  bin = false,
 }) => {
   let note: INote = {
     id,
@@ -34,12 +35,10 @@ const NoteItem: Component<{ n: INote }> = ({
   const handleNoteRemove = () => {
     note.status = "delete";
     note.updated = new Date();
-
-    setNotes(
-      "Notes",
-      Notes.Notes.findIndex((k) => k.id === id),
-      note,
-    );
+    
+    const index = Notes.Notes.findIndex((k) => k.id === id);
+    if (bin) setNotes("Notes", (pv) => pv.splice(index, 1));
+    else setNotes("Notes", index, note);
 
     NoteSyncLocal();
   };
