@@ -6,10 +6,10 @@ import {
   createSignal,
   type Component,
 } from "solid-js";
-import NoteMenuButton from "./Notes/NoteMenuButton";
-import NoteColumnContainer from "./Notes/NoteColumnContainer";
-import NoteItem from "./Notes/NoteItem";
-import { TagLabel } from "./Notes/NoteTags";
+import NoteMenuButton from "../components/Notes/NoteMenuButton";
+import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
+import NoteItem from "../components/Notes/NoteItem";
+import { TagLabel } from "../components/Notes/NoteTags";
 import { INote } from "../lib/notes";
 
 function autoTextareaSize(obj: HTMLTextAreaElement) {
@@ -110,7 +110,9 @@ const Notes: Component = () => {
           </div>
 
           <div class="flex flex-row items-center gap-1 text-neutral-600">
-            <NoteMenuButton icon="label" label="เพิ่มป้ายกำกับ" />
+            <div class=" relative">
+              <NoteMenuButton icon="label" label="เพิ่มป้ายกำกับ" />
+            </div>
             <section class="flex flex-row gap-2">
               <TagLabel label="Lyrics" />
             </section>

@@ -1,5 +1,5 @@
 import { Component, createSignal, Match, Switch } from "solid-js";
-import Notes from "./components/Notes";
+import Notes from "./pages/Notes";
 import Icon from "./components/Icon";
 
 enum Tab {
