@@ -35,7 +35,7 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
   const handleNoteRemove = () => {
     note.status = "delete";
     note.updated = new Date();
-    
+
     const index = Notes.Notes.findIndex((k) => k.id === id);
     if (bin) setNotes("Notes", (pv) => pv.splice(index, 1));
     else setNotes("Notes", index, note);
@@ -48,6 +48,9 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
       <h2 class="text-lg">{title}</h2>
       <span class="text-sm whitespace-pre-wrap">{body}</span>
 
+      <div class="flex flex-row items-center justify-end flex-wrap gap-1">
+        <For each={label}>{(l) => <TagLabel label={l} />}</For>
+      </div>
       <menu class="flex flex-row justify-between gap-1 text-neutral-600">
         <div class="flex flex-row gap-1 opacity-0 duration-300 group-hover:opacity-100">
           <Switch>
@@ -89,10 +92,6 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
             icon="delete"
             label="ลบโน้ต"
           />
-        </div>
-
-        <div class="flex flex-row items-center justify-center">
-          <For each={label}>{(l) => <TagLabel label={l} />}</For>
         </div>
       </menu>
     </div>

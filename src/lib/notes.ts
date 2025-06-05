@@ -14,12 +14,23 @@ export interface INote {
 
 export const NoteSyncLocal = () => {
     localStorage.setItem("notes", JSON.stringify(Notes.Notes));
+    localStorage.setItem("label", JSON.stringify(Notes.Label));
 };
 
 export const NoteGetLocal = (): INote[] => {
     return JSON.parse(localStorage.getItem("notes") ?? '[]');
 };
 
-export const [Notes, setNotes] =
-    createStore<{ Notes: INote[] }>({ Notes: NoteGetLocal() });
-//  createSignal<INote[]>(NoteGetLocal());
+export const LabelGetLocal = (): string[] => {
+    return JSON.parse(localStorage.getItem("label") ?? '[]');
+};
+
+type notes_t = {
+    Notes: INote[];
+    Label: string[];
+}
+
+export const [Notes, setNotes] = createStore<notes_t>({
+    Notes: NoteGetLocal(),
+    Label: LabelGetLocal()
+});

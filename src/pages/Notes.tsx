@@ -1,8 +1,15 @@
-import { For, Show, onMount, createSignal, type Component } from "solid-js";
+import {
+  For,
+  Show,
+  onMount,
+  createSignal,
+  type Component,
+  createEffect,
+} from "solid-js";
 import NoteMenuButton from "../components/Notes/NoteMenuButton";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
-import { TagLabel } from "../components/Notes/NoteTags";
+import { NoteTagSelectorItem, TagLabel } from "../components/Notes/NoteTags";
 import { INote, NoteSyncLocal } from "../lib/notes";
 import { Notes, setNotes } from "../lib/notes";
 
@@ -19,24 +26,29 @@ function autoTextareaSize(obj: HTMLTextAreaElement) {
 const Note: Component = () => {
   const [noteFieldTitle, setNoteFieldTitle] = createSignal<string>("");
   const [noteFieldBody, setNoteFieldBody] = createSignal<string>("");
+  const [noteFieldLabel, setNoteFieldLabel] = createSignal<string>("");
+  const [noteSelectedLabel, setNoteSelectedLabel] = createSignal<string[]>([]);
+
+  const [showLabelSelector, setShowLabelSelector] =
+    createSignal<boolean>(false);
 
   const NoteGetNextId = (): number => {
     if (Notes.Notes.length > 0)
       return Notes.Notes[Notes.Notes.length - 1].id + 1;
-    else return 0
+    else return 0;
   };
 
-  const NoteAddHandler = (
-    pinned: boolean = false,
-    archive: boolean = false,
-  ) => {
+  const handleNoteAdd = (pinned: boolean = false, archive: boolean = false) => {
+    // get value of title and body
     const title = noteFieldTitle();
     const body = noteFieldBody();
 
+    // create note instance
     const note: INote = {
       id: NoteGetNextId(),
       title,
       body,
+      label: noteSelectedLabel(),
       created: new Date(),
       updated: new Date(),
 
@@ -46,18 +58,46 @@ const Note: Component = () => {
       })(),
     };
 
+    // verify not empty body or title
     if (!(note.body || note.title)) return;
+    // save note
     setNotes("Notes", (pv) => [...pv, note]);
 
+    // reset field
     setNoteFieldTitle("");
     setNoteFieldBody("");
+    setShowLabelSelector(false);
+    // sync local with current Notes
     NoteSyncLocal();
+  };
+
+  const handleLabelAddNew = () => {
+    // add new label to selected
+    setNoteSelectedLabel([...noteSelectedLabel(), noteFieldLabel()]);
+    // add new label to storage
+    setNotes("Label", (pv) => [...pv, noteFieldLabel()]);
+    // reset field
+    setNoteFieldLabel("");
+    // sync local with current Notes
+    NoteSyncLocal();
+  };
+
+  const handleLabelSelected = (t: string, checked: boolean) => {
+    if (checked) {
+      setNoteSelectedLabel([...noteSelectedLabel(), t]);
+    } else {
+      setNoteSelectedLabel(noteSelectedLabel().filter((k) => k != t));
+    }
   };
 
   let NoteInputRef: HTMLTextAreaElement;
 
   onMount(() => {
     autoTextareaSize(NoteInputRef);
+  });
+
+  createEffect(() => {
+    console.log(noteSelectedLabel());
   });
 
   return (
@@ -84,12 +124,12 @@ const Note: Component = () => {
         <menu class="flex flex-row justify-between">
           <div class="flex flex-row items-center gap-1 text-neutral-600">
             <NoteMenuButton
-              action={() => NoteAddHandler(true)}
+              action={() => handleNoteAdd(true)}
               icon="keep"
               label="ปักหมุด"
             />
             <NoteMenuButton
-              action={() => NoteAddHandler(false, true)}
+              action={() => handleNoteAdd(false, true)}
               icon="archive"
               label="เก็บ"
             />
@@ -97,16 +137,46 @@ const Note: Component = () => {
 
           <div class="flex flex-row items-center gap-1 text-neutral-600">
             <div class="relative">
-              <NoteMenuButton icon="label" label="เพิ่มป้ายกำกับ" />
+              <NoteMenuButton
+                action={() => setShowLabelSelector(!showLabelSelector())}
+                icon="label"
+                label="เพิ่มป้ายกำกับ"
+              />
+
+              <Show when={showLabelSelector()}>
+                <section class="absolute top-8 right-0 flex w-max flex-col gap-2 rounded-lg border border-neutral-200 bg-neutral-100 p-2">
+                  <span class="text-sm">เพิ่มป้ายกำกับ</span>
+                  <input
+                    type="text"
+                    class="border-b border-neutral-200 text-sm outline-none"
+                    placeholder="ป้ายกำกับใหม่"
+                    value={noteFieldLabel()}
+                    onInput={(ev) => setNoteFieldLabel(ev.target.value)}
+                    onKeyPress={(ev) => {
+                      if (ev.key === "Enter") handleLabelAddNew();
+                    }}
+                  />
+                  <menu class="flex flex-col gap-1">
+                    <For each={Notes.Label}>
+                      {(t) => (
+                        <NoteTagSelectorItem
+                          label={t}
+                          checked={noteSelectedLabel().includes(t)}
+                          onChange={(checked) =>
+                            handleLabelSelected(t, checked)
+                          }
+                        />
+                      )}
+                    </For>
+                  </menu>
+                </section>
+              </Show>
             </div>
-            <section class="flex flex-row gap-2">
-              <TagLabel label="Lyrics" />
-            </section>
 
             <hr class="h-6 border border-neutral-200" />
 
             <button
-              onClick={() => NoteAddHandler()}
+              onClick={() => handleNoteAdd()}
               class="size-max cursor-pointer rounded border border-transparent px-1 text-sm duration-150 hover:border-neutral-200"
             >
               บันทึก
