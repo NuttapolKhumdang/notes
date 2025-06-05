@@ -123,19 +123,6 @@ const Note: Component = () => {
 
         <menu class="flex flex-row justify-between">
           <div class="flex flex-row items-center gap-1 text-neutral-600">
-            <NoteMenuButton
-              action={() => handleNoteAdd(true)}
-              icon="keep"
-              label="ปักหมุด"
-            />
-            <NoteMenuButton
-              action={() => handleNoteAdd(false, true)}
-              icon="archive"
-              label="เก็บ"
-            />
-          </div>
-
-          <div class="flex flex-row items-center gap-1 text-neutral-600">
             <div class="relative">
               <NoteMenuButton
                 action={() => setShowLabelSelector(!showLabelSelector())}
@@ -172,12 +159,25 @@ const Note: Component = () => {
                 </section>
               </Show>
             </div>
+          </div>
+
+          <div class="flex flex-row items-center gap-1 text-neutral-600">
+            <NoteMenuButton
+              action={() => handleNoteAdd(true)}
+              icon="keep"
+              label="ปักหมุด"
+            />
+            <NoteMenuButton
+              action={() => handleNoteAdd(false, true)}
+              icon="archive"
+              label="เก็บ"
+            />
 
             <hr class="h-6 border border-neutral-200" />
 
             <button
               onClick={() => handleNoteAdd()}
-              class="size-max cursor-pointer rounded border border-transparent px-1 text-sm duration-150 hover:border-neutral-200"
+              class="size-max cursor-pointer rounded border border-transparent p-1 text-sm duration-150 hover:border-neutral-200"
             >
               บันทึก
             </button>
