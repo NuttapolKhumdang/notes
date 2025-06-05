@@ -37,14 +37,15 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
     note.updated = new Date();
 
     const index = Notes.Notes.findIndex((k) => k.id === id);
-    if (bin) setNotes("Notes", (pv) => pv.splice(index, 1));
+
+    if (bin) setNotes("Notes", (pv) => pv.filter(k => k.id !== id));
     else setNotes("Notes", index, note);
 
     NoteSyncLocal();
   };
 
   return (
-    <div class="group cursor-pointer rounded-xl border border-neutral-200 p-2 pb-1 hover:border-neutral-400 duration-150">
+    <div class="group cursor-pointer rounded-xl border border-neutral-200 p-2 pb-1 duration-150 hover:border-neutral-400">
       <h2 class="text-lg">{title}</h2>
       <span class="text-sm whitespace-pre-wrap">{body}</span>
 
