@@ -2,7 +2,6 @@ import {
   For,
   Show,
   onMount,
-  createEffect,
   createSignal,
   type Component,
 } from "solid-js";
