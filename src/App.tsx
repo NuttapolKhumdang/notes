@@ -57,31 +57,64 @@ const App: Component = () => {
       <nav class="p-4"></nav>
 
       <main class="grid grid-cols-[18rem_1fr] gap-4 px-4">
-        <aside class="flex h-max flex-col rounded-2xl border border-neutral-200 p-2">
-          <MenuButton
-            label="โน้ต"
-            icon="note_alt"
-            tab={Tab.Notes}
-            action={() => setViewing(Tab.Notes)}
-          />
-          <MenuButton
-            label="ป้ายกำกับ"
-            icon="label"
-            tab={Tab.Label}
-            action={() => setViewing(Tab.Label)}
-          />
-          <MenuButton
-            label="เก็บ"
-            icon="archive"
-            tab={Tab.Archive}
-            action={() => setViewing(Tab.Archive)}
-          />
-          <MenuButton
-            label="ถังขยะ"
-            icon="delete"
-            tab={Tab.Bin}
-            action={() => setViewing(Tab.Bin)}
-          />
+        <aside class="sticky top-8 flex h-max flex-col gap-4">
+          <section class="flex h-max flex-col rounded-2xl border border-neutral-200 p-2">
+            <header class="px-2 pt-2 pb-1">
+              <h1 class="text-2xl">โน้ต</h1>
+            </header>
+          </section>
+          <section class="flex h-max flex-col rounded-2xl border border-neutral-200 p-2">
+            <MenuButton
+              label="โน้ต"
+              icon="note_alt"
+              tab={Tab.Notes}
+              action={() => setViewing(Tab.Notes)}
+            />
+            <MenuButton
+              label="ป้ายกำกับ"
+              icon="label"
+              tab={Tab.Label}
+              action={() => setViewing(Tab.Label)}
+            />
+            <MenuButton
+              label="เก็บ"
+              icon="archive"
+              tab={Tab.Archive}
+              action={() => setViewing(Tab.Archive)}
+            />
+            <MenuButton
+              label="ถังขยะ"
+              icon="delete"
+              tab={Tab.Bin}
+              action={() => setViewing(Tab.Bin)}
+            />
+          </section>
+
+          <footer class="flex h-max cursor-default flex-col rounded-2xl border border-neutral-200 p-2">
+            <header class="flex flex-col gap-1 p-2">
+              <a
+                href="https://nuttapolkhumdang.work"
+                class="font-mono-display flex w-max flex-col leading-none"
+              >
+                <span>Nuttapol</span>
+                <span>Khumdang</span>
+              </a>
+              <span class="font-mono text-[10px]">
+                Inspired from{" "}
+                <a
+                  href="https://keep.google.com"
+                  target="_blank"
+                  class="hover:underline"
+                >
+                  keep by google
+                </a>{" "}
+                but less feature.
+              </span>
+              <span class="font-mono text-[10px]">
+                &copy; 2025 Nuttapol Khumdang
+              </span>
+            </header>
+          </footer>
         </aside>
 
         <Switch>

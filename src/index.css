@@ -2,6 +2,7 @@
 
 @theme {
     --font-sans: "IBM Plex Sans Thai Looped", sans-serif;
+    --font-mono: "DM Mono", monospace;
     --font-mono-display: "Major Mono Display", monospace;
 }
 
