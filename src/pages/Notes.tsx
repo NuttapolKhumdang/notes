@@ -140,7 +140,7 @@ const Note: Component = () => {
               />
 
               <Show when={showLabelSelector()}>
-                <section class="absolute top-8 right-0 z-20 flex w-max flex-col gap-2 rounded-lg border border-neutral-200 bg-neutral-100 p-2">
+                <section class="absolute top-8 left-0 z-20 flex w-max flex-col gap-2 rounded-lg border border-neutral-200 bg-neutral-100 p-2">
                   <span class="text-sm">เพิ่มป้ายกำกับ</span>
                   <input
                     type="text"
