@@ -1,10 +1,4 @@
-import {
-  For,
-  Show,
-  onMount,
-  createSignal,
-  type Component,
-} from "solid-js";
+import { For, Show, onMount, createSignal, type Component } from "solid-js";
 import NoteMenuButton from "../components/Notes/NoteMenuButton";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
@@ -190,13 +184,14 @@ const Note: Component = () => {
         when={Notes.Notes.filter((k) => k.status === "pinned").length !== 0}
       >
         <header class="text-sm text-neutral-600">ปักหมุด</header>
-        <section class="container grid grid-cols-2 md:grid-cols-3 gap-2">
+        <section class="container grid grid-cols-2 gap-2 md:grid-cols-3">
           <For each={Notes.Runtime.renderColumn}>
             {(container) => (
               <NoteColumnContainer>
                 <For
                   each={Notes.Notes.filter((k) => k.status === "pinned").filter(
-                    (k, i) => i % Notes.Runtime.renderColumn.length === container,
+                    (k, i) =>
+                      i % Notes.Runtime.renderColumn.length === container,
                   )}
                 >
                   {(n) => <NoteItem n={n} />}
@@ -208,14 +203,17 @@ const Note: Component = () => {
       </Show>
 
       <header class="text-sm text-neutral-600">โน้ตอื่นๆ</header>
-      <section class="container grid grid-cols-2 md:grid-cols-3 gap-2">
+      <section class="container grid grid-cols-2 gap-2 md:grid-cols-3">
         <For each={Notes.Runtime.renderColumn}>
           {(container) => (
             <NoteColumnContainer>
               <For
                 each={
                   Notes.Notes.filter((k) => !k.status) // clear archive or pinned note
-                    .filter((k, i) => i % Notes.Runtime.renderColumn.length === container) // for sorting to column
+                    .filter(
+                      (k, i) =>
+                        i % Notes.Runtime.renderColumn.length === container,
+                    ) // for sorting to column
                 }
               >
                 {(n) => <NoteItem n={n} />}
@@ -225,8 +223,8 @@ const Note: Component = () => {
         </For>
       </section>
 
-      <Show when={Notes.Notes.filter((k) => !k.status).length ===0}>
-          <NoteNotFoundFallback/>
+      <Show when={Notes.Notes.filter((k) => !k.status).length === 0}>
+        <NoteNotFoundFallback />
       </Show>
     </main>
   );
