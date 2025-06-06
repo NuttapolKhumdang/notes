@@ -81,14 +81,14 @@ const App: Component = () => {
       <nav class="p-4"></nav>
 
       <main class="flex flex-col gap-4 px-4 md:grid md:grid-cols-[18rem_1fr]">
-        <aside class="sticky top-8 flex h-max flex-row gap-4 md:flex-col">
-          <section class="hidden h-max flex-col rounded-2xl border border-neutral-200 p-2 md:flex">
+        <aside class="sticky top-8 z-20 flex h-max flex-row gap-4 md:flex-col">
+          <section class="hidden h-max flex-col rounded-2xl border border-neutral-200 bg-neutral-50 p-2 md:flex">
             <header class="px-2 pt-2 pb-1">
               <h1 class="text-2xl">โน้ต</h1>
             </header>
           </section>
 
-          <section class="flex h-16 flex-1 flex-row rounded-2xl border border-neutral-200 p-2 *:flex-1 md:h-max md:flex-col">
+          <section class="flex h-16 flex-1 flex-row rounded-2xl border border-neutral-200 bg-neutral-50 p-2 *:flex-1 md:h-max md:flex-col">
             <MenuButton
               label="โน้ต"
               icon="note_alt"
@@ -115,7 +115,7 @@ const App: Component = () => {
             />
           </section>
 
-          <footer class="flex h-16 cursor-default flex-col rounded-2xl border border-neutral-200 p-2 md:h-max">
+          <footer class="flex h-16 cursor-default flex-col rounded-2xl border border-neutral-200 bg-neutral-50 p-2 md:h-max">
             <header class="flex h-full flex-col items-center justify-center gap-1 p-1 md:items-start md:justify-start">
               <a
                 href="https://nuttapolkhumdang.work"
