@@ -94,7 +94,7 @@ const App: Component = () => {
             <header class="flex flex-col gap-1 p-2">
               <a
                 href="https://nuttapolkhumdang.work"
-                class="font-mono-display flex w-max flex-col leading-none"
+                class="font-mono-display flex w-max flex-col py-2 leading-none"
               >
                 <span>Nuttapol</span>
                 <span>Khumdang</span>
