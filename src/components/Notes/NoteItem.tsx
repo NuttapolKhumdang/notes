@@ -57,7 +57,7 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
       </h2>
 
       <div onClick={() => handleClickToEditor()} class="w-full flex-1">
-        <span class="text-sm whitespace-pre-wrap">{body}</span>
+        <span class="text-sm whitespace-pre-wrap line-clamp-[20]">{body}</span>
       </div>
 
       <div
