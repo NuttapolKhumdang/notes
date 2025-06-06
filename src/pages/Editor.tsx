@@ -4,6 +4,7 @@ import { autoTextareaSize } from "../lib/textarea";
 import NoteMenuButton from "../components/Notes/NoteMenuButton";
 import { NoteTagSelectorItem } from "../components/Notes/NoteTags";
 import { setViewing, Tab } from "../App";
+import Footer from "../components/Footer";
 
 const Editor: Component = () => {
   const id = Notes.Runtime.editorId;
@@ -185,6 +186,8 @@ const Editor: Component = () => {
           </div>
         </menu>
       </section>
+      
+      <Footer/>
     </main>
   );
 };

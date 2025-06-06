@@ -3,6 +3,7 @@ import { Notes, NoteSyncLocal, setNotes } from "../lib/notes";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
 import NoteNotFoundFallback from "../components/Notes/NotFound";
+import Footer from "../components/Footer";
 
 const Bin: Component = () => {
   const handleRemoveAll = () => {
@@ -43,6 +44,8 @@ const Bin: Component = () => {
       >
         <NoteNotFoundFallback />
       </Show>
+
+      <Footer />
     </main>
   );
 };

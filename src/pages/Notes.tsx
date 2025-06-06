@@ -7,6 +7,7 @@ import { INote, NoteSyncLocal } from "../lib/notes";
 import { Notes, setNotes } from "../lib/notes";
 import { autoTextareaSize } from "../lib/textarea";
 import NoteNotFoundFallback from "../components/Notes/NotFound";
+import Footer from "../components/Footer";
 
 const Note: Component = () => {
   const [noteFieldTitle, setNoteFieldTitle] = createSignal<string>("");
@@ -226,6 +227,8 @@ const Note: Component = () => {
       <Show when={Notes.Notes.filter((k) => !k.status).length === 0}>
         <NoteNotFoundFallback />
       </Show>
+
+      <Footer />
     </main>
   );
 };

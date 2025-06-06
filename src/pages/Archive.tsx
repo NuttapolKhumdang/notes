@@ -3,6 +3,7 @@ import { Notes } from "../lib/notes";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
 import NoteNotFoundFallback from "../components/Notes/NotFound";
+import Footer from "../components/Footer";
 
 const Archive: Component = () => {
   return (
@@ -29,6 +30,8 @@ const Archive: Component = () => {
       >
         <NoteNotFoundFallback />
       </Show>
+
+      <Footer />
     </main>
   );
 };
