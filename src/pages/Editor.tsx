@@ -1,32 +1,24 @@
-import {
-  For,
-  Show,
-  onMount,
-  createSignal,
-  type Component,
-} from "solid-js";
-import NoteMenuButton from "../components/Notes/NoteMenuButton";
-import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
-import NoteItem from "../components/Notes/NoteItem";
-import { NoteTagSelectorItem, TagLabel } from "../components/Notes/NoteTags";
-import { INote, NoteSyncLocal } from "../lib/notes";
-import { Notes, setNotes } from "../lib/notes";
+import { type Component, createSignal, onMount, For, Show } from "solid-js";
+import { INote, Notes, NoteSyncLocal, setNotes } from "../lib/notes";
 import { autoTextareaSize } from "../lib/textarea";
+import NoteMenuButton from "../components/Notes/NoteMenuButton";
+import { NoteTagSelectorItem } from "../components/Notes/NoteTags";
+import { setViewing, Tab } from "../App";
 
-const Note: Component = () => {
-  const [noteFieldTitle, setNoteFieldTitle] = createSignal<string>("");
-  const [noteFieldBody, setNoteFieldBody] = createSignal<string>("");
+const Editor: Component = () => {
+  const id = Notes.Runtime.editorId;
+  const index = Notes.Notes.findIndex((k) => k.id === id);
+  const _note = Notes.Notes.filter((k) => k.id === id)[0];
+
+  const [noteFieldTitle, setNoteFieldTitle] = createSignal<string>(_note.title);
+  const [noteFieldBody, setNoteFieldBody] = createSignal<string>(_note.body);
   const [noteFieldLabel, setNoteFieldLabel] = createSignal<string>("");
-  const [noteSelectedLabel, setNoteSelectedLabel] = createSignal<string[]>([]);
+  const [noteSelectedLabel, setNoteSelectedLabel] = createSignal<string[]>(
+    _note.label,
+  );
 
   const [showLabelSelector, setShowLabelSelector] =
     createSignal<boolean>(false);
-
-  const NoteGetNextId = (): number => {
-    if (Notes.Notes.length > 0)
-      return Notes.Notes[Notes.Notes.length - 1].id + 1;
-    else return 0;
-  };
 
   const handleNoteAdd = (pinned: boolean = false, archive: boolean = false) => {
     // get value of title and body
@@ -35,14 +27,14 @@ const Note: Component = () => {
 
     // create note instance
     const note: INote = {
-      id: NoteGetNextId(),
+      id,
       title,
       body,
       label: noteSelectedLabel(),
-      created: new Date(),
       updated: new Date(),
 
       status: ((): INote["status"] => {
+        if (!pinned && !archive) return _note.status;
         if (pinned) return "pinned";
         if (archive) return "archive";
       })(),
@@ -51,7 +43,12 @@ const Note: Component = () => {
     // verify not empty body or title
     if (!(note.body || note.title)) return;
     // save note
-    setNotes("Notes", (pv) => [...pv, note]);
+    setNotes("Notes", (notes) =>
+      notes.map((n) => {
+        if (n.id === id) n = note;
+        return n;
+      }),
+    );
 
     // reset field
     setNoteFieldTitle("");
@@ -59,6 +56,9 @@ const Note: Component = () => {
     setShowLabelSelector(false);
     // sync local with current Notes
     NoteSyncLocal();
+
+    // warp to home page
+    setViewing(Tab.Notes);
   };
 
   const handleLabelAddNew = () => {
@@ -97,7 +97,7 @@ const Note: Component = () => {
   let NoteInputRef: HTMLTextAreaElement;
 
   onMount(() => {
-    autoTextareaSize(NoteInputRef);
+    autoTextareaSize(NoteInputRef, false);
   });
 
   return (
@@ -185,47 +185,7 @@ const Note: Component = () => {
           </div>
         </menu>
       </section>
-
-      <Show
-        when={Notes.Notes.filter((k) => k.status === "pinned").length !== 0}
-      >
-        <header class="text-sm text-neutral-600">ปักหมุด</header>
-        <section class="container grid grid-cols-3 gap-2">
-          <For each={[0, 1, 2]}>
-            {(container) => (
-              <NoteColumnContainer>
-                <For
-                  each={Notes.Notes.filter((k) => k.status === "pinned").filter(
-                    (k, i) => i % 3 === container,
-                  )}
-                >
-                  {(n) => <NoteItem n={n} />}
-                </For>
-              </NoteColumnContainer>
-            )}
-          </For>
-        </section>
-      </Show>
-
-      <header class="text-sm text-neutral-600">โน้ตอื่นๆ</header>
-      <section class="container grid grid-cols-3 gap-2">
-        <For each={[0, 1, 2]}>
-          {(container) => (
-            <NoteColumnContainer>
-              <For
-                each={
-                  Notes.Notes.filter((k) => !k.status) // clear archive or pinned note
-                    .filter((k, i) => i % 3 === container) // for sorting to column
-                }
-              >
-                {(n) => <NoteItem n={n} />}
-              </For>
-            </NoteColumnContainer>
-          )}
-        </For>
-      </section>
     </main>
   );
 };
-
-export default Note;
+export default Editor;

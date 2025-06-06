@@ -2,6 +2,7 @@ import { For, Match, Switch, type Component } from "solid-js";
 import NoteMenuButton from "./NoteMenuButton";
 import { INote, NoteSyncLocal, Notes, setNotes } from "../../lib/notes";
 import { TagLabel } from "./NoteTags";
+import { setViewing, Tab } from "../../App";
 
 const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
   n: { id, title, body, label, status, created, updated },
@@ -38,16 +39,26 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
 
     const index = Notes.Notes.findIndex((k) => k.id === id);
 
-    if (bin) setNotes("Notes", (pv) => pv.filter(k => k.id !== id));
+    if (bin) setNotes("Notes", (pv) => pv.filter((k) => k.id !== id));
     else setNotes("Notes", index, note);
 
     NoteSyncLocal();
   };
 
+  const handleClickToEditor = () => {
+    setNotes((notes) => ({ Runtime: { editorId: id } }));
+    setViewing(Tab.Editor);
+  };
+
   return (
     <div class="group cursor-pointer rounded-xl border border-neutral-200 p-2 pb-1 duration-150 hover:border-neutral-400">
       <h2 class="text-lg">{title}</h2>
-      <span class="text-sm whitespace-pre-wrap">{body}</span>
+      <span
+        onClick={() => handleClickToEditor()}
+        class="text-sm whitespace-pre-wrap"
+      >
+        {body}
+      </span>
 
       <div class="flex flex-row flex-wrap items-center justify-end gap-1">
         <For each={label}>{(l) => <TagLabel label={l} />}</For>

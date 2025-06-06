@@ -25,12 +25,18 @@ export const LabelGetLocal = (): string[] => {
     return JSON.parse(localStorage.getItem("label") ?? '[]');
 };
 
+type runtime_t = {
+    editorId?: number;
+}
+
 type notes_t = {
     Notes: INote[];
     Label: string[];
+    Runtime?: runtime_t;
 }
 
 export const [Notes, setNotes] = createStore<notes_t>({
     Notes: NoteGetLocal(),
-    Label: LabelGetLocal()
+    Label: LabelGetLocal(),
+    Runtime: {}
 });

@@ -4,15 +4,17 @@ import Icon from "./components/Icon";
 import Archive from "./pages/Archive";
 import Bin from "./pages/Bin";
 import Label from "./pages/Label";
+import Editor from "./pages/Editor";
 
-enum Tab {
+export enum Tab {
   Notes,
   Label,
   Archive,
   Bin,
+  Editor,
 }
 
-const [viewing, setViewing] = createSignal<Tab>(Tab.Notes);
+export const [viewing, setViewing] = createSignal<Tab>(Tab.Notes);
 
 type MenuButton_t = {
   label: string;
@@ -129,6 +131,9 @@ const App: Component = () => {
           </Match>
           <Match when={viewing() === Tab.Bin}>
             <Bin />
+          </Match>
+          <Match when={viewing() === Tab.Editor}>
+            <Editor />
           </Match>
         </Switch>
       </main>
