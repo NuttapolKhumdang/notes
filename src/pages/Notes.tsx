@@ -18,7 +18,6 @@ const Note: Component = () => {
   const [noteFieldBody, setNoteFieldBody] = createSignal<string>("");
   const [noteFieldLabel, setNoteFieldLabel] = createSignal<string>("");
   const [noteSelectedLabel, setNoteSelectedLabel] = createSignal<string[]>([]);
-
   const [showLabelSelector, setShowLabelSelector] =
     createSignal<boolean>(false);
 
@@ -190,13 +189,13 @@ const Note: Component = () => {
         when={Notes.Notes.filter((k) => k.status === "pinned").length !== 0}
       >
         <header class="text-sm text-neutral-600">ปักหมุด</header>
-        <section class="container grid grid-cols-3 gap-2">
-          <For each={[0, 1, 2]}>
+        <section class="container grid grid-cols-2 md:grid-cols-3 gap-2">
+          <For each={Notes.Runtime.renderColumn}>
             {(container) => (
               <NoteColumnContainer>
                 <For
                   each={Notes.Notes.filter((k) => k.status === "pinned").filter(
-                    (k, i) => i % 3 === container,
+                    (k, i) => i % Notes.Runtime.renderColumn.length === container,
                   )}
                 >
                   {(n) => <NoteItem n={n} />}
@@ -208,14 +207,14 @@ const Note: Component = () => {
       </Show>
 
       <header class="text-sm text-neutral-600">โน้ตอื่นๆ</header>
-      <section class="container grid grid-cols-3 gap-2">
-        <For each={[0, 1, 2]}>
+      <section class="container grid grid-cols-2 md:grid-cols-3 gap-2">
+        <For each={Notes.Runtime.renderColumn}>
           {(container) => (
             <NoteColumnContainer>
               <For
                 each={
                   Notes.Notes.filter((k) => !k.status) // clear archive or pinned note
-                    .filter((k, i) => i % 3 === container) // for sorting to column
+                    .filter((k, i) => i % Notes.Runtime.renderColumn.length === container) // for sorting to column
                 }
               >
                 {(n) => <NoteItem n={n} />}

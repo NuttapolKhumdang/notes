@@ -27,6 +27,7 @@ export const LabelGetLocal = (): string[] => {
 
 type runtime_t = {
     editorId?: number;
+    renderColumn?: number[];
 }
 
 type notes_t = {
@@ -38,5 +39,8 @@ type notes_t = {
 export const [Notes, setNotes] = createStore<notes_t>({
     Notes: NoteGetLocal(),
     Label: LabelGetLocal(),
-    Runtime: {}
+    Runtime: {
+        renderColumn: window.innerWidth > 768 ? [0, 1, 2] : [0, 1]
+    }
 });
+

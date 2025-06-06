@@ -1,10 +1,18 @@
-import { Component, createEffect, createSignal, Match, Switch } from "solid-js";
+import {
+  Component,
+  createEffect,
+  createSignal,
+  Match,
+  onMount,
+  Switch,
+} from "solid-js";
 import Notes from "./pages/Notes";
 import Icon from "./components/Icon";
 import Archive from "./pages/Archive";
 import Bin from "./pages/Bin";
 import Label from "./pages/Label";
 import Editor from "./pages/Editor";
+import { setNotes } from "./lib/notes";
 
 export enum Tab {
   Notes,
@@ -36,7 +44,7 @@ const MenuButton: Component<MenuButton_t> = ({
   return (
     <button
       onClick={() => action()}
-      class="flex flex-row items-center justify-start gap-3 rounded-xl px-2 pt-1 duration-200 hover:bg-neutral-200"
+      class="flex flex-row items-center justify-center gap-3 rounded-xl px-2 pt-1 duration-200 hover:bg-neutral-200 md:justify-start"
       classList={{
         "bg-amber-100": viewing() === tab,
       }}
@@ -44,12 +52,26 @@ const MenuButton: Component<MenuButton_t> = ({
       <span class="mt-1">
         <Icon name={icon} size={1.8} />
       </span>
-      <span class="text-xl font-medium">{label}</span>
+      <span class="hidden text-xl font-medium md:block">{label}</span>
     </button>
   );
 };
 
 const App: Component = () => {
+  const [currnetRenderColumnSize, setRenderCoulmnSize] = createSignal<number[]>(
+    [0, 1, 2],
+  );
+
+  onMount(() => {
+    window.addEventListener("resize", () => {
+      const renderColumn = window.innerWidth > 768 ? [0, 1, 2] : [0, 1];
+      if (renderColumn.length !== currnetRenderColumnSize().length) {
+        setRenderCoulmnSize(renderColumn);
+        setNotes((notes) => ({ Runtime: { renderColumn } }));
+      }
+    });
+  });
+
   createEffect(() => {
     SyncViewLocal(viewing());
   });
@@ -58,14 +80,15 @@ const App: Component = () => {
     <>
       <nav class="p-4"></nav>
 
-      <main class="grid grid-cols-[18rem_1fr] gap-4 px-4">
-        <aside class="sticky top-8 flex h-max flex-col gap-4">
-          <section class="flex h-max flex-col rounded-2xl border border-neutral-200 p-2">
+      <main class="flex flex-col gap-4 px-4 md:grid md:grid-cols-[18rem_1fr]">
+        <aside class="sticky top-8 flex h-max flex-row gap-4 md:flex-col">
+          <section class="hidden h-max flex-col rounded-2xl border border-neutral-200 p-2 md:flex">
             <header class="px-2 pt-2 pb-1">
               <h1 class="text-2xl">โน้ต</h1>
             </header>
           </section>
-          <section class="flex h-max flex-col rounded-2xl border border-neutral-200 p-2">
+
+          <section class="flex h-16 flex-1 flex-row rounded-2xl border border-neutral-200 p-2 *:flex-1 md:h-max md:flex-col">
             <MenuButton
               label="โน้ต"
               icon="note_alt"
@@ -92,16 +115,16 @@ const App: Component = () => {
             />
           </section>
 
-          <footer class="flex h-max cursor-default flex-col rounded-2xl border border-neutral-200 p-2">
-            <header class="flex flex-col gap-1 p-2">
+          <footer class="flex h-16 cursor-default flex-col rounded-2xl border border-neutral-200 p-2 md:h-max">
+            <header class="flex h-full flex-col items-center justify-center gap-1 p-1 md:items-start md:justify-start">
               <a
                 href="https://nuttapolkhumdang.work"
-                class="font-mono-display flex w-max flex-col py-2 leading-none"
+                class="font-mono-display flex w-max flex-col leading-none md:py-2"
               >
                 <span>Nuttapol</span>
                 <span>Khumdang</span>
               </a>
-              <span class="font-mono text-[10px]">
+              <span class="hidden font-mono text-[10px] md:block">
                 Inspired from{" "}
                 <a
                   href="https://keep.google.com"
@@ -112,7 +135,7 @@ const App: Component = () => {
                 </a>{" "}
                 but less feature.
               </span>
-              <span class="font-mono text-[10px]">
+              <span class="hidden font-mono text-[10px] md:block">
                 &copy; 2025 Nuttapol Khumdang
               </span>
             </header>

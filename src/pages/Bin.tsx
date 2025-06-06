@@ -23,12 +23,12 @@ const Bin: Component = () => {
       </header>
 
       <section class="container grid grid-cols-3 gap-2">
-        <For each={[0, 1, 2]}>
+        <For each={Notes.Runtime.renderColumn}>
           {(container) => (
             <NoteColumnContainer>
               <For
                 each={Notes.Notes.filter((k) => k.status === "delete").filter(
-                  (k, i) => i % 3 === container,
+                  (k, i) => i % Notes.Runtime.renderColumn.length === container,
                 )}
               >
                 {(n) => <NoteItem n={n} bin />}
