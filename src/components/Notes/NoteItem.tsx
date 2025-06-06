@@ -52,15 +52,13 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
 
   return (
     <div class="group cursor-pointer rounded-xl border border-neutral-200 p-2 pb-1 duration-150 hover:border-neutral-400">
-      <h2 onClick={() => handleClickToEditor()} class="text-lg">
+      <h2 onClick={() => handleClickToEditor()} class="text-lg w-full">
         {title}
       </h2>
-      <span
-        onClick={() => handleClickToEditor()}
-        class="text-sm whitespace-pre-wrap"
-      >
-        {body}
-      </span>
+
+      <div onClick={() => handleClickToEditor()} class="w-full flex-1">
+        <span class="text-sm whitespace-pre-wrap">{body}</span>
+      </div>
 
       <div
         onClick={() => handleClickToEditor()}
@@ -70,7 +68,7 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
       </div>
 
       <menu class="flex flex-row justify-between gap-1 text-neutral-600">
-        <div class="flex flex-row md:opacity-0 duration-300 group-hover:opacity-100">
+        <div class="flex flex-row duration-300 group-hover:opacity-100 md:opacity-0">
           <Switch>
             <Match when={status === "pinned"}>
               <NoteMenuButton
@@ -105,7 +103,7 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
             </Match>
           </Switch>
         </div>
-        <div class="flex flex-row md:opacity-0 duration-300 group-hover:opacity-100">
+        <div class="flex flex-row duration-300 group-hover:opacity-100 md:opacity-0">
           <NoteMenuButton
             action={() => handleNoteRemove()}
             icon="delete"
