@@ -8,7 +8,6 @@ import Footer from "../components/Footer";
 
 const Editor: Component = () => {
   const id = Notes.Runtime.editorId;
-  const index = Notes.Notes.findIndex((k) => k.id === id);
   const _note = Notes.Notes.filter((k) => k.id === id)[0];
 
   const [noteFieldTitle, setNoteFieldTitle] = createSignal<string>(_note.title);

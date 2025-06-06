@@ -2,7 +2,7 @@ import { For, Match, Switch, type Component } from "solid-js";
 import NoteMenuButton from "./NoteMenuButton";
 import { INote, NoteSyncLocal, Notes, setNotes } from "../../lib/notes";
 import { TagLabel } from "./NoteTags";
-import { setViewing, Tab } from "../../App";
+import { currnetRenderColumnSize, setViewing, Tab } from "../../App";
 
 const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
   n: { id, title, body, label, status, created, updated },
@@ -46,18 +46,23 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
   };
 
   const handleClickToEditor = () => {
-    setNotes((notes) => ({ Runtime: { editorId: id } }));
+    setNotes((notes) => ({
+      Runtime: { editorId: id, renderColumn: currnetRenderColumnSize() },
+    }));
     setViewing(Tab.Editor);
   };
 
   return (
     <div class="group cursor-pointer rounded-xl border border-neutral-200 p-2 pb-1 duration-150 hover:border-neutral-400">
-      <h2 onClick={() => handleClickToEditor()} class="text-lg w-full leading-tight py-1">
+      <h2
+        onClick={() => handleClickToEditor()}
+        class="w-full py-1 text-lg leading-tight"
+      >
         {title}
       </h2>
 
       <div onClick={() => handleClickToEditor()} class="w-full flex-1">
-        <span class="text-sm whitespace-pre-wrap line-clamp-[20]">{body}</span>
+        <span class="line-clamp-[20] text-sm whitespace-pre-wrap">{body}</span>
       </div>
 
       <div

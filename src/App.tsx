@@ -26,6 +26,9 @@ export enum Tab {
 
 export const [viewing, setViewing] = createSignal<Tab>(Tab.Notes);
 export const [viewTabName, setViewTabName] = createSignal<string>();
+export const [currnetRenderColumnSize, setRenderCoulmnSize] = createSignal<
+  number[]
+>([0, 1, 2]);
 
 type MenuButton_t = {
   label: string;
@@ -51,7 +54,8 @@ const MenuButton: Component<MenuButton_t> = ({
       onClick={() => action()}
       class="flex flex-row items-center gap-3 rounded-xl px-2 pt-1 duration-200 hover:bg-neutral-200"
       classList={{
-        "bg-amber-100": tab != undefined && (viewing() == tab || viewTabName() == tab),
+        "bg-amber-100":
+          tab != undefined && (viewing() == tab || viewTabName() == tab),
         "justify-center md:justify-start": !fixed,
         "justify-start": fixed,
       }}
@@ -72,9 +76,6 @@ const MenuButton: Component<MenuButton_t> = ({
 const App: Component = () => {
   const [openShieldLabelFilter, setOpenShieldFilter] =
     createSignal<boolean>(false);
-  const [currnetRenderColumnSize, setRenderCoulmnSize] = createSignal<number[]>(
-    [0, 1, 2],
-  );
 
   onMount(() => {
     window.addEventListener("resize", () => {
@@ -88,6 +89,7 @@ const App: Component = () => {
 
   createEffect(() => {
     SyncViewLocal(viewing());
+    if (viewing() !== Tab.Label) setViewTabName(undefined);
   });
 
   return (
