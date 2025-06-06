@@ -33,7 +33,7 @@ const NoteMenuButton: Component<noteMenuButton_t> = ({
       onMouseEnter={() => setLebelShow(true)}
       onMouseLeave={() => setLebelShow(false)}
       onClick={() => action()}
-      class="relative flex size-8 items-center justify-center rounded-full border border-transparent duration-200 hover:border-neutral-300"
+      class="cursor-pointer relative flex size-8 items-center justify-center rounded-full border border-transparent duration-200 hover:border-neutral-300"
     >
       <Icon name={icon} size={1.2} />
 

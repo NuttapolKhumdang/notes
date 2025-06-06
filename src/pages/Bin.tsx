@@ -17,7 +17,7 @@ const Bin: Component = () => {
         <h1 class="text-sm text-neutral-600">ถังขยะ</h1>
         <button
           onClick={() => handleRemoveAll()}
-          class="text-sm text-neutral-600 hover:underline"
+          class="cursor-pointer text-sm text-neutral-600 hover:underline"
         >
           ลบทั้งหมด
         </button>
