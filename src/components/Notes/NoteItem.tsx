@@ -52,7 +52,7 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
 
   return (
     <div class="group cursor-pointer rounded-xl border border-neutral-200 p-2 pb-1 duration-150 hover:border-neutral-400">
-      <h2 onClick={() => handleClickToEditor()} class="text-lg w-full">
+      <h2 onClick={() => handleClickToEditor()} class="text-lg w-full leading-tight">
         {title}
       </h2>
 
