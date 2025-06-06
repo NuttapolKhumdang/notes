@@ -125,13 +125,13 @@ const App: Component = () => {
                 <span>Khumdang</span>
               </a>
               <span class="hidden font-mono text-[10px] md:block">
-                Inspired from{" "}
+                Inspired by{" "}
                 <a
                   href="https://keep.google.com"
                   target="_blank"
                   class="hover:underline"
                 >
-                  keep by google
+                  google keep
                 </a>{" "}
                 but less feature.
               </span>
