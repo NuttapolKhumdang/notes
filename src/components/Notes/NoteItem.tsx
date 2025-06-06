@@ -52,7 +52,9 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
 
   return (
     <div class="group cursor-pointer rounded-xl border border-neutral-200 p-2 pb-1 duration-150 hover:border-neutral-400">
-      <h2 class="text-lg">{title}</h2>
+      <h2 onClick={() => handleClickToEditor()} class="text-lg">
+        {title}
+      </h2>
       <span
         onClick={() => handleClickToEditor()}
         class="text-sm whitespace-pre-wrap"
@@ -60,7 +62,10 @@ const NoteItem: Component<{ n: INote; bin?: boolean }> = ({
         {body}
       </span>
 
-      <div class="flex flex-row flex-wrap items-center justify-end gap-1">
+      <div
+        onClick={() => handleClickToEditor()}
+        class="flex flex-row flex-wrap items-center justify-end gap-1"
+      >
         <For each={label}>{(l) => <TagLabel label={l} />}</For>
       </div>
 
