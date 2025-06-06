@@ -103,7 +103,7 @@ const Editor: Component = () => {
   });
 
   return (
-    <main class="container mx-auto flex h-full max-w-2xl flex-col gap-4">
+    <main class="container mx-auto flex h-full max-w-3xl flex-col gap-4">
       <section class="flex flex-col gap-2 rounded-xl border border-neutral-200 p-2">
         <header class="flex flex-col">
           <textarea

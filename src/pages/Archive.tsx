@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 
 const Archive: Component = () => {
   return (
-    <main class="container mx-auto flex h-full max-w-2xl flex-col gap-4">
+    <main class="container mx-auto flex h-full max-w-3xl flex-col gap-4">
       <header class="text-sm text-neutral-600">เก็บ</header>
       <section class="container grid grid-cols-3 gap-2">
         <For each={Notes.Runtime.renderColumn}>

@@ -54,6 +54,7 @@ const Note: Component = () => {
     setShowLabelSelector(false);
     // sync local with current Notes
     NoteSyncLocal();
+    resetTextBoxSize();
   };
 
   const handleLabelAddNew = () => {
@@ -89,6 +90,10 @@ const Note: Component = () => {
     }
   };
 
+  const resetTextBoxSize = () => {
+    NoteInputRef.style.height = NoteInputRef.scrollHeight + "px";
+  };
+
   let NoteInputRef: HTMLTextAreaElement;
 
   onMount(() => {
@@ -96,7 +101,7 @@ const Note: Component = () => {
   });
 
   return (
-    <main class="container mx-auto flex h-full max-w-2xl flex-col gap-4">
+    <main class="container mx-auto flex h-full max-w-3xl flex-col gap-4">
       <section class="flex flex-col gap-2 rounded-xl border border-neutral-200 p-2">
         <header class="flex flex-col">
           <input

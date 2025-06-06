@@ -34,7 +34,7 @@ const Label: Component = () => {
   });
 
   return (
-    <main class="container mx-auto flex h-full max-w-2xl flex-col gap-4">
+    <main class="container mx-auto flex h-full max-w-3xl flex-col gap-4">
       <header class="flex flex-row items-center justify-between">
         <h1 class="text-sm text-neutral-600">ป้ายกำกับ</h1>
       </header>
