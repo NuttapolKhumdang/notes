@@ -1,9 +1,4 @@
-import {
-  For,
-  Show,
-  createSignal,
-  type Component,
-} from "solid-js";
+import { For, Show, createSignal, type Component } from "solid-js";
 import { INote, Notes } from "../lib/notes";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
@@ -17,8 +12,7 @@ const Label: Component = () => {
       (k) =>
         k.label?.length &&
         k.label?.length !== 0 &&
-        k.status !== "delete" &&
-        k.status !== "archive",
+        k.status !== "delete"
     ),
   );
 
@@ -28,8 +22,7 @@ const Label: Component = () => {
         (k) =>
           k.label?.length &&
           k.label?.length !== 0 &&
-          k.status !== "delete" &&
-          k.status !== "archive",
+          k.status !== "delete"
       ).filter((k) => (selected() ? k.label.includes(selected()) : true)),
     );
   };
@@ -39,6 +32,7 @@ const Label: Component = () => {
       <header class="flex flex-row items-center justify-between">
         <h1 class="text-sm text-neutral-600">ป้ายกำกับ</h1>
         <select
+          class="outline-none border border-neutral-200 p-1 pb-0 rounded-lg"
           onChange={(ev) => {
             setSelect(ev.target.value);
             updateFilter();
