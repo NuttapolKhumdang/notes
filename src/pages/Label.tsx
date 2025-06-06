@@ -1,9 +1,7 @@
 import {
-  Accessor,
-  createEffect,
-  createSignal,
   For,
   Show,
+  createSignal,
   type Component,
 } from "solid-js";
 import { INote, Notes } from "../lib/notes";
