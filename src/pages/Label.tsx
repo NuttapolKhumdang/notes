@@ -1,4 +1,10 @@
-import { For, Show, createSignal, type Component } from "solid-js";
+import {
+  For,
+  Show,
+  createEffect,
+  createSignal,
+  type Component,
+} from "solid-js";
 import { INote, Notes } from "../lib/notes";
 import NoteColumnContainer from "../components/Notes/NoteColumnContainer";
 import NoteItem from "../components/Notes/NoteItem";
@@ -6,13 +12,10 @@ import NoteNotFoundFallback from "../components/Notes/NotFound";
 import Footer from "../components/Footer";
 
 const Label: Component = () => {
-  const [selected, setSelect] = createSignal<string>();
+  const [selected, setSelect] = createSignal<string>(Notes.Runtime.filterLabel);
   const [notes, setNote] = createSignal<INote[]>(
     Notes.Notes.filter(
-      (k) =>
-        k.label?.length &&
-        k.label?.length !== 0 &&
-        k.status !== "delete"
+      (k) => k.label?.length && k.label?.length !== 0 && k.status !== "delete",
     ),
   );
 
@@ -20,29 +23,20 @@ const Label: Component = () => {
     setNote(
       Notes.Notes.filter(
         (k) =>
-          k.label?.length &&
-          k.label?.length !== 0 &&
-          k.status !== "delete"
-      ).filter((k) => (selected() ? k.label.includes(selected()) : true)),
+          k.label?.length && k.label?.length !== 0 && k.status !== "delete",
+      ).filter((k) => k.label.includes(selected())),
     );
   };
+
+  createEffect(() => {
+    setSelect(Notes.Runtime.filterLabel);
+    updateFilter();
+  });
 
   return (
     <main class="container mx-auto flex h-full max-w-2xl flex-col gap-4">
       <header class="flex flex-row items-center justify-between">
         <h1 class="text-sm text-neutral-600">ป้ายกำกับ</h1>
-        <select
-          class="outline-none border border-neutral-200 p-1 pb-0 rounded-lg"
-          onChange={(ev) => {
-            setSelect(ev.target.value);
-            updateFilter();
-          }}
-        >
-          <option value={""}>ทั้งหมด</option>
-          <For each={Notes.Label}>
-            {(label) => <option value={label}>{label}</option>}
-          </For>
-        </select>
       </header>
 
       <section class="container grid grid-cols-2 gap-2 md:grid-cols-3">

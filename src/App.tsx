@@ -2,17 +2,18 @@ import {
   Component,
   createEffect,
   createSignal,
+  For,
   Match,
   onMount,
   Switch,
 } from "solid-js";
-import Notes from "./pages/Notes";
+import Note from "./pages/Note";
 import Icon from "./components/Icon";
 import Archive from "./pages/Archive";
 import Bin from "./pages/Bin";
 import Label from "./pages/Label";
 import Editor from "./pages/Editor";
-import { setNotes } from "./lib/notes";
+import { Notes, setNotes } from "./lib/notes";
 
 export enum Tab {
   Notes,
@@ -20,14 +21,17 @@ export enum Tab {
   Archive,
   Bin,
   Editor,
+  LabelEditor,
 }
 
 export const [viewing, setViewing] = createSignal<Tab>(Tab.Notes);
+export const [viewTabName, setViewTabName] = createSignal<string>();
 
 type MenuButton_t = {
   label: string;
   icon: string;
-  tab?: Tab;
+  tab?: Tab | string;
+  fixed?: boolean;
   action?: VoidFunction;
 };
 
@@ -39,25 +43,35 @@ const MenuButton: Component<MenuButton_t> = ({
   label,
   icon,
   tab,
+  fixed = false,
   action = () => null,
 }) => {
   return (
     <button
       onClick={() => action()}
-      class="flex flex-row items-center justify-center gap-3 rounded-xl px-2 pt-1 duration-200 hover:bg-neutral-200 md:justify-start"
+      class="flex flex-row items-center gap-3 rounded-xl px-2 pt-1 duration-200 hover:bg-neutral-200"
       classList={{
-        "bg-amber-100": viewing() === tab,
+        "bg-amber-100": tab != undefined && (viewing() == tab || viewTabName() == tab),
+        "justify-center md:justify-start": !fixed,
+        "justify-start": fixed,
       }}
     >
       <span class="mt-1">
         <Icon name={icon} size={1.8} />
       </span>
-      <span class="hidden text-xl font-medium md:block">{label}</span>
+      <span
+        class="text-xl font-medium"
+        classList={{ "hidden md:block": !fixed }}
+      >
+        {label}
+      </span>
     </button>
   );
 };
 
 const App: Component = () => {
+  const [openShieldLabelFilter, setOpenShieldFilter] =
+    createSignal<boolean>(false);
   const [currnetRenderColumnSize, setRenderCoulmnSize] = createSignal<number[]>(
     [0, 1, 2],
   );
@@ -96,10 +110,10 @@ const App: Component = () => {
               action={() => setViewing(Tab.Notes)}
             />
             <MenuButton
-              label="ป้ายกำกับ"
-              icon="label"
-              tab={Tab.Label}
-              action={() => setViewing(Tab.Label)}
+              label="แก้ไขป้ายกำกับ"
+              icon="edit"
+              tab={Tab.LabelEditor}
+              action={() => setViewing(Tab.LabelEditor)}
             />
             <MenuButton
               label="เก็บ"
@@ -113,6 +127,65 @@ const App: Component = () => {
               tab={Tab.Bin}
               action={() => setViewing(Tab.Bin)}
             />
+          </section>
+          <section class="relative flex h-16 flex-1 flex-row rounded-2xl border border-neutral-200 bg-neutral-50 p-2 *:flex-1 md:hidden md:h-max md:flex-col">
+            <MenuButton
+              label="ถังขยะ"
+              icon="tag"
+              tab={undefined}
+              action={() => setOpenShieldFilter(!openShieldLabelFilter())}
+            />
+
+            <section
+              class="absolute top-16 left-0 flex w-max flex-col rounded-xl border border-neutral-200 bg-neutral-50 p-2"
+              classList={{
+                hidden: !openShieldLabelFilter(),
+                flex: openShieldLabelFilter(),
+              }}
+            >
+              <For each={Notes.Label}>
+                {(label) => (
+                  <MenuButton
+                    label={label}
+                    icon="label"
+                    tab={label}
+                    fixed
+                    action={() => {
+                      setNotes((notes) => ({
+                        Runtime: {
+                          filterLabel: label,
+                          renderColumn: currnetRenderColumnSize(),
+                        },
+                      }));
+                      setViewing(Tab.Label);
+                      setViewTabName(label);
+                    }}
+                  />
+                )}
+              </For>
+            </section>
+          </section>
+
+          <section class="hidden h-16 flex-1 flex-row rounded-2xl border border-neutral-200 bg-neutral-50 p-2 *:flex-1 md:flex md:h-max md:flex-col">
+            <For each={Notes.Label}>
+              {(label) => (
+                <MenuButton
+                  label={label}
+                  icon="label"
+                  tab={label}
+                  action={() => {
+                    setNotes((notes) => ({
+                      Runtime: {
+                        filterLabel: label,
+                        renderColumn: currnetRenderColumnSize(),
+                      },
+                    }));
+                    setViewing(Tab.Label);
+                    setViewTabName(label);
+                  }}
+                />
+              )}
+            </For>
           </section>
 
           <footer class="flex h-16 cursor-default flex-col rounded-2xl border border-neutral-200 bg-neutral-50 p-2 md:h-max">
@@ -144,7 +217,10 @@ const App: Component = () => {
 
         <Switch>
           <Match when={viewing() === Tab.Notes}>
-            <Notes />
+            <Note />
+          </Match>
+          <Match when={viewing() === Tab.LabelEditor}>
+            <Label />
           </Match>
           <Match when={viewing() === Tab.Label}>
             <Label />

@@ -27,6 +27,7 @@ export const LabelGetLocal = (): string[] => {
 
 type runtime_t = {
     editorId?: number;
+    filterLabel?: string;
     renderColumn?: number[];
 }
 
