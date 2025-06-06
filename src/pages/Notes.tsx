@@ -12,6 +12,7 @@ import { NoteTagSelectorItem, TagLabel } from "../components/Notes/NoteTags";
 import { INote, NoteSyncLocal } from "../lib/notes";
 import { Notes, setNotes } from "../lib/notes";
 import { autoTextareaSize } from "../lib/textarea";
+import NoteNotFoundFallback from "../components/Notes/NotFound";
 
 const Note: Component = () => {
   const [noteFieldTitle, setNoteFieldTitle] = createSignal<string>("");
@@ -223,6 +224,10 @@ const Note: Component = () => {
           )}
         </For>
       </section>
+
+      <Show when={Notes.Notes.filter((k) => !k.status).length ===0}>
+          <NoteNotFoundFallback/>
+      </Show>
     </main>
   );
 };
