@@ -5,6 +5,7 @@ import {
   For,
   Match,
   onMount,
+  Show,
   Switch,
 } from "solid-js";
 import Note from "./pages/Note";
@@ -130,28 +131,53 @@ const App: Component = () => {
               action={() => setViewing(Tab.Bin)}
             />
           </section>
-          <section class="relative flex h-16 flex-1 flex-row rounded-2xl border border-neutral-200 bg-neutral-50 p-2 *:flex-1 md:hidden md:h-max md:flex-col">
-            <MenuButton
-              label="ถังขยะ"
-              icon="tag"
-              tab={undefined}
-              action={() => setOpenShieldFilter(!openShieldLabelFilter())}
-            />
 
-            <section
-              class="absolute top-16 left-0 flex w-max flex-col rounded-xl border border-neutral-200 bg-neutral-50 p-2"
-              classList={{
-                hidden: !openShieldLabelFilter(),
-                flex: openShieldLabelFilter(),
-              }}
-            >
+          <Show when={Notes.Label.length !== 0}>
+            <section class="relative flex h-16 flex-1 flex-row rounded-2xl border border-neutral-200 bg-neutral-50 p-2 *:flex-1 md:hidden md:h-max md:flex-col">
+              <MenuButton
+                label="ถังขยะ"
+                icon="tag"
+                tab={undefined}
+                action={() => setOpenShieldFilter(!openShieldLabelFilter())}
+              />
+
+              <section
+                class="absolute top-16 left-0 flex w-max flex-col rounded-xl border border-neutral-200 bg-neutral-50 p-2"
+                classList={{
+                  hidden: !openShieldLabelFilter(),
+                  flex: openShieldLabelFilter(),
+                }}
+              >
+                <For each={Notes.Label}>
+                  {(label) => (
+                    <MenuButton
+                      label={label}
+                      icon="label"
+                      tab={label}
+                      fixed
+                      action={() => {
+                        setNotes((notes) => ({
+                          Runtime: {
+                            filterLabel: label,
+                            renderColumn: currnetRenderColumnSize(),
+                          },
+                        }));
+                        setViewing(Tab.Label);
+                        setViewTabName(label);
+                      }}
+                    />
+                  )}
+                </For>
+              </section>
+            </section>
+
+            <section class="hidden h-16 flex-1 flex-row rounded-2xl border border-neutral-200 bg-neutral-50 p-2 *:flex-1 md:flex md:h-max md:flex-col">
               <For each={Notes.Label}>
                 {(label) => (
                   <MenuButton
                     label={label}
                     icon="label"
                     tab={label}
-                    fixed
                     action={() => {
                       setNotes((notes) => ({
                         Runtime: {
@@ -166,29 +192,7 @@ const App: Component = () => {
                 )}
               </For>
             </section>
-          </section>
-
-          <section class="hidden h-16 flex-1 flex-row rounded-2xl border border-neutral-200 bg-neutral-50 p-2 *:flex-1 md:flex md:h-max md:flex-col">
-            <For each={Notes.Label}>
-              {(label) => (
-                <MenuButton
-                  label={label}
-                  icon="label"
-                  tab={label}
-                  action={() => {
-                    setNotes((notes) => ({
-                      Runtime: {
-                        filterLabel: label,
-                        renderColumn: currnetRenderColumnSize(),
-                      },
-                    }));
-                    setViewing(Tab.Label);
-                    setViewTabName(label);
-                  }}
-                />
-              )}
-            </For>
-          </section>
+          </Show>
 
           <footer class="flex h-16 cursor-default flex-col rounded-2xl border border-neutral-200 bg-neutral-50 p-2 md:h-max">
             <header class="flex h-full flex-col items-center justify-center gap-1 p-1 md:items-start md:justify-start">
