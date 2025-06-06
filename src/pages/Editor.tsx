@@ -95,26 +95,28 @@ const Editor: Component = () => {
     }
   };
 
-  let NoteInputRef: HTMLTextAreaElement;
+  let NoteInputTitleRef: HTMLTextAreaElement;
+  let NoteInputBodyRef: HTMLTextAreaElement;
 
   onMount(() => {
-    autoTextareaSize(NoteInputRef, false);
+    autoTextareaSize(NoteInputBodyRef, false);
+    autoTextareaSize(NoteInputTitleRef, false);
   });
 
   return (
     <main class="container mx-auto flex h-full max-w-2xl flex-col gap-4">
       <section class="flex flex-col gap-2 rounded-xl border border-neutral-200 p-2">
         <header class="flex flex-col">
-          <input
-            type="text"
+          <textarea
+            ref={NoteInputTitleRef!}
             placeholder="ชื่อเรื่อง"
-            class="py-2 text-xl font-medium outline-none"
+            class="py-2 text-xl font-medium resize-none outline-none"
             value={noteFieldTitle()}
             onInput={(ev) => setNoteFieldTitle(ev.target.value)}
-          />
+          ></textarea>
 
           <textarea
-            ref={NoteInputRef!}
+            ref={NoteInputBodyRef!}
             placeholder="จดโน้ต"
             class="resize-none outline-none"
             value={noteFieldBody()}
@@ -186,7 +188,7 @@ const Editor: Component = () => {
           </div>
         </menu>
       </section>
-      
+
       <Footer/>
     </main>
   );
