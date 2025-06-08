@@ -15,6 +15,7 @@ import Bin from "./pages/Bin";
 import Label from "./pages/Label";
 import Editor from "./pages/Editor";
 import { Notes, setNotes } from "./lib/notes";
+import LabelEditor from "./pages/LabelEditor";
 
 export enum Tab {
   Notes,
@@ -226,7 +227,7 @@ const App: Component = () => {
             <Note />
           </Match>
           <Match when={viewing() === Tab.LabelEditor}>
-            <Label />
+            <LabelEditor />
           </Match>
           <Match when={viewing() === Tab.Label}>
             <Label />
