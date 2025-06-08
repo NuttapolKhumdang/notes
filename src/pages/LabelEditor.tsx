@@ -98,6 +98,7 @@ const LabelEditor: Component = () => {
         return note;
       }),
     );
+    NoteSyncLocal();
   };
 
   return (
